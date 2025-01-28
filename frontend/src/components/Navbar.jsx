@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -15,6 +16,7 @@ const Navbar = () => {
   const { user } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -29,16 +31,41 @@ const Navbar = () => {
       console.log(error);
     }
   };
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <div className="bg-white">
-      <div className="flex items-center justify-between mx-auto max-w-7xl h-16">
+      <div className="flex items-center justify-between mx-auto max-w-7xl h-16 px-4">
         <div>
-          <h1 className="text-2xl font-bold text-red-600">
-            Naukri
-          </h1>
+          <h1 className="text-2xl font-bold text-red-600">Naukri</h1>
         </div>
-        <div className="flex items-center gap-12">
-          <ul className="flex font-medium items-center gap-5">
+
+        {/* Hamburger Menu for Mobile */}
+        <div className="md:hidden">
+          <button onClick={toggleMenu} className="text-gray-600 focus:outline-none">
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16m-7 6h7"
+              ></path>
+            </svg>
+          </button>
+        </div>
+
+        {/* Navigation Links */}
+        <div className={`md:flex items-center gap-12 ${isMenuOpen ? 'block' : 'hidden'} md:block`}>
+          <ul className="flex flex-col md:flex-row font-medium items-center gap-5">
             {user && user.role === "recruiter" ? (
               <>
                 <li>
@@ -64,7 +91,7 @@ const Navbar = () => {
           </ul>
 
           {!user ? (
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col md:flex-row items-center gap-2 mt-4 md:mt-0">
               <Link to="/login">
                 <Button variant="outline">Login</Button>
               </Link>
