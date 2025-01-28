@@ -8,7 +8,7 @@ import userRouter from "./routes/userRoute.js";
 import companyRouter from "./routes/companyRoute.js";
 import jobRouter from "./routes/jobRoute.js";
 import applicationRouter from "./routes/applicationRoute.js";
-import fs from "fs"
+
 
 dotenv.config({});
 
@@ -29,12 +29,7 @@ const corsOption = {
 app.use(cors(corsOption));
 
 // Serve static files from the "uploads" directory
-app.use("/uploads", express.static(path.join(_dirname, "uploads")));
-
-const uploadsDir = path.join(_dirname, 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 const PORT = process.env.PORT || 6000;
 

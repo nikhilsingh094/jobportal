@@ -15,10 +15,10 @@ export const register = async (req, res) => {
     }
 
     const file = req.file;
-    const baseUrl = process.env.BASE_URL || `http://localhost:${process.env.PORT || 6000}`;
-    const logo = `${baseUrl}/uploads/${file.filename}`;
+    const logo = `http://localhost:${process.env.PORT || 6000}/uploads/${file.filename}`;
 
-    
+    // const fileuri = getDataUri(file)
+    // const cloudRes = await cloudinary.uploader.upload(fileuri.content)
 
     const user = await User.findOne({ email });
     if (user) {
@@ -154,10 +154,8 @@ export const updateProfile = async (req, res) => {
 
     // Update resume if a file was uploaded
     if (file) {
-      const baseUrl = process.env.BASE_URL || `http://localhost:${process.env.PORT || 6000}`;
-      const resumePath = `${baseUrl}/uploads/${file.filename}`;
+      const resumePath = `http://localhost:${process.env.PORT || 6000}/uploads/${file.filename}`;
       user.profile.resume = resumePath;
-    
       if (file.originalname) {
         user.profile.resumeOriginalName = file.originalname;
       }
