@@ -1,20 +1,22 @@
+import React, { useState } from "react";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@radix-ui/react-popover";
-
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setUser } from "../../redux/userSlice";
+import { Menu, X } from "lucide-react"; // Import icons for hamburger and close
 
 const Navbar = () => {
   const { user } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -29,15 +31,20 @@ const Navbar = () => {
       console.log(error);
     }
   };
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
     <div className="bg-white">
-      <div className="flex items-center justify-between mx-auto max-w-7xl h-16">
+      <div className="flex items-center justify-between mx-auto max-w-7xl h-16 px-4">
         <div>
           <h1 className="text-2xl font-bold text-red-600">
-          <Link to ="/">Naukri</Link>  
+            <Link to="/">Naukri</Link>
           </h1>
         </div>
-        <div className="flex items-center gap-12">
+        <div className="hidden md:flex items-center gap-12">
           <ul className="flex font-medium items-center gap-5">
             {user && user.role === "recruiter" ? (
               <>
@@ -118,7 +125,64 @@ const Navbar = () => {
             </Popover>
           )}
         </div>
+        <div className="md:hidden">
+          <Button variant="ghost" onClick={toggleMobileMenu}>
+            {isMobileMenuOpen ? <X /> : <Menu />}
+          </Button>
+        </div>
       </div>
+      {isMobileMenuOpen && (
+        <div className="md:hidden bg-white">
+          <ul className="flex flex-col font-medium items-center gap-5 p-4">
+            {user && user.role === "recruiter" ? (
+              <>
+                <li>
+                  <Link to="/admin/companies/">Companies</Link>
+                </li>
+                <li>
+                  <Link to="/admin/jobs">Jobs</Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link to="/">Home</Link>
+                </li>
+                <li>
+                  <Link to="/jobs">Jobs</Link>
+                </li>
+                <li>
+                  <Link to="/browse">Browse</Link>
+                </li>
+              </>
+            )}
+            {!user ? (
+              <div className="flex flex-col items-center gap-2">
+                <Link to="/login">
+                  <Button variant="outline">Login</Button>
+                </Link>
+                <Link to="/register">
+                  <Button
+                    variant="outline"
+                    className="bg-blue-700 text-white hover:bg-blue-500 hover:text-white"
+                  >
+                    Signup
+                  </Button>
+                </Link>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center gap-2">
+                <Button variant="link">
+                  <Link to="/profile">View Profile</Link>
+                </Button>
+                <Button variant="link" onClick={handleLogout}>
+                  Logout
+                </Button>
+              </div>
+            )}
+          </ul>
+        </div>
+      )}
     </div>
   );
 };
