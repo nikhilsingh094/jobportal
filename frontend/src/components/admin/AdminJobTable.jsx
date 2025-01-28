@@ -43,9 +43,7 @@ function AdminJobTable() {
               <td className="px-6 py-4">{j?.title}</td>
               <td className="px-6 py-4">{j?.createdAt.split("T")[0]}</td>
               <td className="px-6 py-4">
-                <button className="text-blue-600 hover:text-blue-800 transition">
-                  <Edit2 onClick={()=>navigate(`/admin/job/post/${j._id}`)} className="w-5 h-5" />
-                </button>
+             
                 <button className="text-blue-600 hover:text-blue-800 transition ml-4">
                   <Eye onClick={()=>navigate(`/admin/job/${j._id}/applicants`)} className="w-5 h-5" />
                 </button>

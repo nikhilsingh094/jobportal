@@ -42,7 +42,7 @@ function CompanySetup() {
 
     try {
       const res = await axios.put(
-        `http://localhost:5050/api/v1/company/updateCompany/${params.id}`,
+        `https://jobportal-yikl.onrender.com/api/v1/company/updateCompany/${params.id}`,
         formdata,
         {
           headers: {

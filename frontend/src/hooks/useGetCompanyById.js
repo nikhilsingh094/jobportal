@@ -10,7 +10,7 @@ function useGetCompanyById(companyId) {
   useEffect(() => {
     const getCompanyById = async () => {
       try {
-        const res = await axios.get(`http://localhost:5050/api/v1/company/getCompanyById/${companyId}`, {
+        const res = await axios.get(`https://jobportal-yikl.onrender.com/api/v1/company/getCompanyById/${companyId}`, {
           withCredentials: true,
         });
         if (res.data.success) {

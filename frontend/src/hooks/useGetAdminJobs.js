@@ -9,7 +9,7 @@ function useGetAdminJobs() {
   useEffect(() => {
     const getAdminJobs = async () => {
       try {
-        const res = await axios.get(`http://localhost:5050/api/v1/job/getadminjobs`, {
+        const res = await axios.get(`https://jobportal-yikl.onrender.com/api/v1/job/getadminjobs`, {
           withCredentials: true,
         });
         if (res.data.success) {
