@@ -154,8 +154,10 @@ export const updateProfile = async (req, res) => {
 
     // Update resume if a file was uploaded
     if (file) {
-      const resumePath = `http://localhost:${process.env.PORT || 6000}/uploads/${file.filename}`;
+      const baseUrl = process.env.BASE_URL || `http://localhost:${process.env.PORT || 6000}`;
+      const resumePath = `${baseUrl}/uploads/${file.filename}`;
       user.profile.resume = resumePath;
+    
       if (file.originalname) {
         user.profile.resumeOriginalName = file.originalname;
       }
