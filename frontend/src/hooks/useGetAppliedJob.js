@@ -10,7 +10,7 @@ const useGetAppliedJobs = () => {
     const fetchAppliedJobs = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5050/api/v1/application/get`,
+          `https://jobportal-id64.onrender.com/api/v1/application/get`,
           {
             withCredentials: true,
           }

@@ -17,7 +17,7 @@ function Applicants() {
 
   const statusHandler = async(status,id)=>{
     try {
-      const res = await axios.post(`http://localhost:5050/api/v1/application/status/${id}/update`,{status},{
+      const res = await axios.post(`https://jobportal-id64.onrender.com/api/v1/application/status/${id}/update`,{status},{
         withCredentials:true
       })
       if(res.data.success){
@@ -33,7 +33,7 @@ function Applicants() {
     const fetchApplicants = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5050/api/v1/application/${params.id}/applicants`,
+          `https://jobportal-id64.onrender.com/api/v1/application/${params.id}/applicants`,
           {
             withCredentials: true,
           }

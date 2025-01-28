@@ -14,7 +14,7 @@ function AddCompany() {
   const registerCompany = async () => {
     try {
       const res = await axios.post(
-        `http://localhost:5050/api/v1/company/addCompany`,
+        `https://jobportal-id64.onrender.com/api/v1/company/addCompany`,
         { companyName },
         {
           headers: {

@@ -52,7 +52,7 @@ const PostJob = () => {
     try {
       setLoading(true);
       const res = await axios.post(
-        `http://localhost:5050/api/v1/job/post`,
+        `https://jobportal-id64.onrender.com/api/v1/job/post`,
         input,
         {
           headers: {

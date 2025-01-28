@@ -21,7 +21,7 @@ const [isApplied,setIsApplied] = useState(hasApplied);
   const applyJob = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:5050/api/v1/application/apply/${jobId}`,
+        `https://jobportal-id64.onrender.com/api/v1/application/apply/${jobId}`,
         {
           withCredentials: true,
         }
@@ -43,7 +43,7 @@ const [isApplied,setIsApplied] = useState(hasApplied);
     const getSingleJob = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5050/api/v1/job/get/${jobId}`,
+          `https://jobportal-id64.onrender.com/api/v1/job/get/${jobId}`,
           {
             withCredentials: true,
           }
