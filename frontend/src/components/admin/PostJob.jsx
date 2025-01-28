@@ -11,11 +11,11 @@ import {
 } from "../ui/select";
 import axios from "axios";
 import { toast } from "sonner";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 
 const PostJob = () => {
-  const params = useParams();
+ 
 
   // const { singleJob } = useSelector((store) => store.job);
   const { companies } = useSelector((store) => store.company);
@@ -52,7 +52,7 @@ const PostJob = () => {
     try {
       setLoading(true);
       const res = await axios.post(
-        `https://jobportal-yikl.onrender.com/api/v1/job/post`,
+        `http://localhost:5050/api/v1/job/post`,
         input,
         {
           headers: {

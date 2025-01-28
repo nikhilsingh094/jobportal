@@ -1,4 +1,4 @@
-import { Edit2, Eye } from "lucide-react";
+import {  Eye } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";

@@ -14,7 +14,7 @@ function AddCompany() {
   const registerCompany = async () => {
     try {
       const res = await axios.post(
-        `https://jobportal-yikl.onrender.com/api/v1/company/addCompany`,
+        `http://localhost:5050/api/v1/company/addCompany`,
         { companyName },
         {
           headers: {

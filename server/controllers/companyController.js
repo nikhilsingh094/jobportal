@@ -1,4 +1,6 @@
 import { Company } from "../models/companyModel.js";
+import cloudinary from "../utils/cloudinary.js";
+import getDataUri from "../utils/datauri.js";
 
 
 export const register = async (req, res) => {
@@ -99,8 +101,12 @@ export const updateCompany = async (req, res) => {
       });
     }
 
+    const fileUri = getDataUri(file);
+    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+    const logo = cloudResponse.secure_url;
+
     // Construct the file URL for local storage
-    const logo = `http://localhost:${process.env.PORT || 6000}/uploads/${file.filename}`;
+    // const logo = `http://localhost:${process.env.PORT || 6000}/uploads/${file.filename}`;
 
     const updatedCompany = { companyName, location, website, description, logo };
 

@@ -15,10 +15,10 @@ export const register = async (req, res) => {
     }
 
     const file = req.file;
-    const logo = `http://localhost:${process.env.PORT || 6000}/uploads/${file.filename}`;
+    // const logo = `http://localhost:${process.env.PORT || 6000}/uploads/${file.filename}`;
 
-    // const fileuri = getDataUri(file)
-    // const cloudRes = await cloudinary.uploader.upload(fileuri.content)
+    const fileuri = getDataUri(file);
+    const cloudRes = await cloudinary.uploader.upload(fileuri.content);
 
     const user = await User.findOne({ email });
     if (user) {
@@ -36,9 +36,9 @@ export const register = async (req, res) => {
       phoneNumber,
       password: hashedPassword,
       role,
-      profile:{
-        profilePhoto:logo
-      }
+      profile: {
+        profilePhoto: cloudRes.secure_url,
+      },
     });
 
     return res.status(201).json({
@@ -50,11 +50,10 @@ export const register = async (req, res) => {
   }
 };
 
-export const login = async (req,res) => {
+export const login = async (req, res) => {
   try {
     const { email, password, role } = req.body;
-  
-    
+
     if (!email || !password || !role) {
       return res.status(400).json({
         success: false,
@@ -130,6 +129,9 @@ export const updateProfile = async (req, res) => {
     const { name, email, phoneNumber, bio, skills } = req.body;
     const file = req.file;
 
+    const fileUri = getDataUri(file);
+    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+
     let skillsArray;
     if (skills) {
       skillsArray = skills.split(",");
@@ -153,12 +155,10 @@ export const updateProfile = async (req, res) => {
     if (skills) user.profile.skills = skillsArray;
 
     // Update resume if a file was uploaded
-    if (file) {
-      const resumePath = `http://localhost:${process.env.PORT || 6000}/uploads/${file.filename}`;
-      user.profile.resume = resumePath;
-      if (file.originalname) {
-        user.profile.resumeOriginalName = file.originalname;
-      }
+
+    if (cloudResponse) {
+      user.profile.resume = cloudResponse.secure_url;
+      user.profile.resumeOriginalName = file.originalname;
     }
 
     await user.save();

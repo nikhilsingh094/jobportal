@@ -13,21 +13,20 @@ import applicationRouter from "./routes/applicationRoute.js";
 dotenv.config({});
 
 const app = express();
-
-
+const _dirname = path.resolve()
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 const corsOption = {
-  origin: "http://localhost:5173/",
+  origin: "http://localhost:5173",
   credentials: true,
 };
 app.use(cors(corsOption));
 
 // Serve static files from the "uploads" directory
-app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+// app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 const PORT = process.env.PORT || 6000;
 
@@ -35,6 +34,11 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/company", companyRouter);
 app.use("/api/v1/job", jobRouter);
 app.use("/api/v1/application", applicationRouter);
+
+app.use(express.static(path.join(_dirname,"/frontend/dist")));
+app.get('*',(req,res)=>{
+res.sendFile(path.resolve(_dirname,"frontend","dist","index.html"))
+});
 
 app.listen(PORT, () => {
   connectDB();
