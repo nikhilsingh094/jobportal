@@ -29,7 +29,7 @@ const corsOption = {
 app.use(cors(corsOption));
 
 // Serve static files from the "uploads" directory
-app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+app.use("/uploads", express.static(path.join(_dirname, "uploads")));
 
 const PORT = process.env.PORT || 6000;
 
