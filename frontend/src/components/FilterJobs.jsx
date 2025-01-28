@@ -1,9 +1,8 @@
-import  { useEffect, useState } from 'react'
-import { RadioGroup, RadioGroupItem } from './ui/radio-group'
-import { Label } from './ui/label'
-import { useDispatch } from 'react-redux'
-import { setSearchBrowseJobs } from '../../redux/jobSlice'
-
+import { useEffect, useState } from 'react';
+import { RadioGroup, RadioGroupItem } from './ui/radio-group';
+import { Label } from './ui/label';
+import { useDispatch } from 'react-redux';
+import { setSearchBrowseJobs } from '../../redux/jobSlice';
 
 const fitlerData = [
     {
@@ -18,7 +17,7 @@ const fitlerData = [
         fitlerType: "Salary",
         array: ["0-40k", "42-1lakh", "1lakh to 5lakh"]
     },
-]
+];
 
 const FilterJobs = () => {
     const [selectedValue, setSelectedValue] = useState('');
@@ -26,12 +25,12 @@ const FilterJobs = () => {
     const changeHandler = (value) => {
         setSelectedValue(value);
     }
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(setSearchBrowseJobs(selectedValue));
-    },[selectedValue]);
+    }, [selectedValue]);
 
     return (
-        <div className='w-[30%] bg-white p-3 rounded-md'>
+        <div className='w-full md:w-[30%] bg-white p-3 rounded-md'>
             <h1 className='font-bold text-lg'>Filter Jobs</h1>
             <hr className='mt-3' />
             <RadioGroup value={selectedValue} onValueChange={changeHandler}>
@@ -58,4 +57,4 @@ const FilterJobs = () => {
     )
 }
 
-export default FilterJobs
+export default FilterJobs;

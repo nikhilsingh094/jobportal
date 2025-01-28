@@ -27,7 +27,7 @@ function Jobs() {
       <Navbar />
       <div className="min-h-screen bg-gray-50 py-8">
         <div className="container mx-auto px-6">
-          <div className="flex flex-col md:flex-row gap-2">
+          <div className="flex flex-col md:flex-row gap-4">
             {/* Left Sidebar - Filter Section */}
             <FilterJobs />
 
@@ -36,8 +36,8 @@ function Jobs() {
               <span>No Job Found</span>
             ) : (
               // Wrap the job listings container with scrollable styles
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[500px] overflow-y-auto overflow-x-hidden">
-                {allJobs.map((jb) => {
+              <div className="w-full md:w-[70%] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[500px] overflow-y-auto overflow-x-hidden">
+                {filterJobs.map((jb) => {
                   return <Job key={jb._id} job={jb} />;
                 })}
               </div>
