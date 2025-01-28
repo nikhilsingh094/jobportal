@@ -43,7 +43,7 @@ const [isApplied,setIsApplied] = useState(hasApplied);
     const getSingleJob = async () => {
       try {
         const res = await axios.get(
-          `https://jobportal-yikl.onrender.com/api/v1/job/get/${jobId}`,
+          `http://localhost:5050/api/v1/job/get/${jobId}`,
           {
             withCredentials: true,
           }

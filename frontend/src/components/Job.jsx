@@ -2,10 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 
 function Job({job}) {
-  const navigate = useNavigate()
-
-  console.log("job---------",job);
-  
+  const navigate = useNavigate()  
 
   return (
     <>

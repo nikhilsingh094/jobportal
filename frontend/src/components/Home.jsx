@@ -14,10 +14,10 @@ function Home() {
   useEffect(() => {
     const fetchAllJobs = async () => {
       try {
-        const res = await axios.get(`https://jobportal-yikl.onrender.com/api/v1/job/get?keyword=${searchBrowseJob}`, {
+        const res = await axios.get(`http://localhost:5050/api/v1/job/get?keyword=${searchBrowseJob}`, {
           withCredentials: true,
         });
-        console.log("res========", res);
+        
 
         if (res.data.success) {
           dispatch(setAllJobs(res.data.jobs));

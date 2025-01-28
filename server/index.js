@@ -15,15 +15,13 @@ dotenv.config({});
 const app = express();
 
 
-const _dirname = path.resolve()
-
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 const corsOption = {
-  origin: "https://jobportal-yikl.onrender.com/",
+  origin: "http://localhost:5173/",
   credentials: true,
 };
 app.use(cors(corsOption));
@@ -37,11 +35,6 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/company", companyRouter);
 app.use("/api/v1/job", jobRouter);
 app.use("/api/v1/application", applicationRouter);
-
-app.use(express.static(path.join(_dirname,"/frontend/dist")))
-app.get('*',(req,res)=>{
-  res.sendFile(path.resolve(_dirname,"frontend","dist","index.html"))
-})
 
 app.listen(PORT, () => {
   connectDB();

@@ -42,7 +42,7 @@ const EditProfile = ({ open, setOpen }) => {
     try {
       dispatch(setLoading(true));
       const res = await axios.post(
-        `https://jobportal-yikl.onrender.com/api/v1/user/profile/update`,
+        `http://localhost:5050/api/v1/user/profile/update`,
         formdata,
         {
           headers: {
