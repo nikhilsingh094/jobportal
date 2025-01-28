@@ -15,10 +15,10 @@ export const register = async (req, res) => {
     }
 
     const file = req.file;
-    const logo = process.env.BASE_URL || `http://localhost:${process.env.PORT || 6000}/uploads/${file.filename}`;
+    const baseUrl = process.env.BASE_URL || `http://localhost:${process.env.PORT || 6000}`;
+    const logo = `${baseUrl}/uploads/${file.filename}`;
 
-    // const fileuri = getDataUri(file)
-    // const cloudRes = await cloudinary.uploader.upload(fileuri.content)
+    
 
     const user = await User.findOne({ email });
     if (user) {
