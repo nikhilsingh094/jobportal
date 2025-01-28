@@ -15,7 +15,7 @@ export const register = async (req, res) => {
     }
 
     const file = req.file;
-    const logo = `http://localhost:${process.env.PORT || 6000}/uploads/${file.filename}`;
+    const logo = process.env.BASE_URL || `http://localhost:${process.env.PORT || 6000}/uploads/${file.filename}`;
 
     // const fileuri = getDataUri(file)
     // const cloudRes = await cloudinary.uploader.upload(fileuri.content)
