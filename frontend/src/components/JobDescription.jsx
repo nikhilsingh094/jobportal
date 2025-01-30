@@ -36,6 +36,7 @@ const [isApplied,setIsApplied] = useState(hasApplied);
       }
     } catch (error) {
       console.log(error);
+      alert("You have to login or register first")
     }
   };
 
