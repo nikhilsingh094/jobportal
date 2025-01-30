@@ -21,10 +21,20 @@ const Signup = () => {
     file: "",
   });
 
+  const [err, setErr] = useState({
+    name: "",
+    email: "",
+    phoneNumber: "",
+    password: "",
+    role: "",
+    file: "",
+  });
+
   const { user } = useSelector((store) => store.auth);
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
+  
   const changeFileHandler = (e) => {
     setInput({ ...input, file: e.target.files?.[0] });
   };
@@ -35,15 +45,42 @@ const Signup = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    let validationErrors = {};
+
+    if (!input.name || input.name.length < 12) {
+      validationErrors.name = "Name must be valid and at least 12 characters.";
+    }
+
+    if (!input.email || input.email.length < 10 || !emailRegex.test(input.email)) {
+      validationErrors.email = "Email must be valid and at least 10 characters.";
+    }
+
+    if (!input.password || input.password.length < 6) {
+      validationErrors.password = "Password should not be empty and must be at least 6 characters.";
+    }
+
+    if (!input.role) {
+      validationErrors.role = "Role must be selected.";
+    }
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErr(validationErrors);
+      return;
+    }
+
     const formdata = new FormData();
     formdata.append("name", input.name);
     formdata.append("email", input.email);
     formdata.append("phoneNumber", input.phoneNumber);
     formdata.append("password", input.password);
     formdata.append("role", input.role);
+
     if (input.file) {
       formdata.append("file", input.file);
     }
+
     try {
       dispatch(setLoading(true));
       const res = await axios.post(
@@ -64,7 +101,6 @@ const Signup = () => {
           phoneNumber: "",
           password: "",
           role: "",
-          // file: "",
         });
         toast.success(res.data.message);
       }
@@ -79,7 +115,7 @@ const Signup = () => {
     if (user) {
       navigate("/");
     }
-  }, []);
+  }, [user, navigate]);
 
   return (
     <>
@@ -106,6 +142,7 @@ const Signup = () => {
                 placeholder="Enter your full name"
                 className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
               />
+              {err.name && <span className="text-red-400 text-sm mt-2">{err.name}</span>}
             </div>
             <div>
               <label
@@ -123,6 +160,7 @@ const Signup = () => {
                 placeholder="Enter your email"
                 className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
               />
+              {err.email && <span className="text-red-400 text-sm mt-2">{err.email}</span>}
             </div>
             <div>
               <label
@@ -140,6 +178,7 @@ const Signup = () => {
                 placeholder="Enter your Number"
                 className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
               />
+              {err.phoneNumber && <span className="text-red-400 text-sm mt-2">{err.phoneNumber}</span>}
             </div>
             <div>
               <label
@@ -157,6 +196,7 @@ const Signup = () => {
                 placeholder="Enter your password"
                 className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
               />
+              {err.password && <span className="text-red-400 text-sm mt-2">{err.password}</span>}
             </div>
             <div className="flex items-center justify-between">
               <RadioGroup className="flex items-center gap-4 my-4">
@@ -183,6 +223,7 @@ const Signup = () => {
                   <Label htmlFor="role">Recruiter</Label>
                 </div>
               </RadioGroup>
+              {err.role && <span className="text-red-400 text-sm mt-2">{err.role}</span>}
             </div>
             <div className="flex items-center gap-2">
               <Label>Profile</Label>

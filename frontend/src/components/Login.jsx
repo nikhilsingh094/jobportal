@@ -6,64 +6,90 @@ import { Input } from "./ui/input";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import axios from "axios";
-import { setLoading,setUser } from "../../redux/userSlice";
+import { setLoading, setUser } from "../../redux/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "./ui/button";
 import { Loader2 } from "lucide-react";
 
 const Login = () => {
-    const [input,setInput] = useState({
-        email:"",
-        password:"",
-        role:"",
-    })
+  const [input, setInput] = useState({
+    email: "",
+    password: "",
+    role: "",
+  });
 
-    const {user} = useSelector(store=>store.auth)
-    const changeEventHandler = (e) => {
-        setInput({...input,[e.target.name]:e.target.value})
+  const [err, setErr] = useState({
+    email: "",
+    password: "",
+    role: "",
+  });
+
+  const { user } = useSelector((store) => store.auth);
+  const changeEventHandler = (e) => {
+    setInput({ ...input, [e.target.name]: e.target.value });
+  };
+
+  const navigate = useNavigate();
+  const { loading } = useSelector((store) => store.auth);
+  const dispatch = useDispatch();
+
+  const loginHandler = async (e) => {
+    e.preventDefault();
+
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    let validationErrors = {};
+
+    if (!input.email || input.email.length < 10 || !emailRegex.test(input.email)) {
+      validationErrors.email = "Email must be valid and at least 10 characters.";
+    }
+    if (!input.password) {
+      validationErrors.password = "Password is required.";
+    }
+    if (!input.role) {
+      validationErrors.role = "Role must be selected.";
     }
 
-    const navigate = useNavigate();
-    const {loading} = useSelector(store=>store.auth);
-    const dispatch = useDispatch()
+    if (Object.keys(validationErrors).length > 0) {
+      setErr(validationErrors);
+      return;
+    }
 
-    const loginHandler = async (e) => {
-        e.preventDefault();
-        try {
-            dispatch(setLoading(true))
-          const res = await axios.post(
-            `https://jobportal-id64.onrender.com/api/v1/user/login`,
-            input,
-            {
-              headers: {
-                "Content-type": "application/json",
-              },
-              withCredentials: true,
-            }
-          );
-          if(res.data.success){
-            dispatch(setUser(res.data.user))
-            navigate("/")
-            setInput({
-                email: "",
-                password: "",
-                role: "",
-            })
-            toast.success(res.data.message)
-          }
-        } catch (error) {
-            console.log(error);     
-        }finally{
-            dispatch(setLoading(false))
+    try {
+      dispatch(setLoading(true));
+      const res = await axios.post(
+        `https://jobportal-id64.onrender.com/api/v1/user/login`,
+        input,
+        {
+          headers: {
+            "Content-type": "application/json",
+          },
+          withCredentials: true,
         }
-      };
+      );
 
+      if (res.data.success) {
+        dispatch(setUser(res.data.user));
+        navigate("/");
+        setInput({
+          email: "",
+          password: "",
+          role: "",
+        });
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
 
-      useEffect(() => {
-        if (user) {
-          navigate("/");
-        }
-      }, []);
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   return (
     <>
@@ -74,7 +100,6 @@ const Login = () => {
             Login into your account
           </h2>
           <form onSubmit={loginHandler} className="space-y-2">
-            
             <div>
               <label
                 htmlFor="email"
@@ -91,8 +116,9 @@ const Login = () => {
                 placeholder="Enter your email"
                 className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
               />
+              {err.email && <span className="text-red-400 text-sm mt-2">{err.email}</span>}
             </div>
-           
+
             <div>
               <label
                 htmlFor="password"
@@ -109,6 +135,7 @@ const Login = () => {
                 placeholder="Enter your password"
                 className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
               />
+              {err.password && <span className="text-red-400 text-sm mt-2">{err.password}</span>}
             </div>
             <div className="flex items-center justify-between">
               <RadioGroup className="flex items-center gap-4 my-4">
@@ -117,7 +144,7 @@ const Login = () => {
                     type="radio"
                     name="role"
                     value="student"
-                    checked={input.role === 'student'}
+                    checked={input.role === "student"}
                     onChange={changeEventHandler}
                     className="cursor-pointer"
                   />
@@ -128,16 +155,17 @@ const Login = () => {
                     type="radio"
                     name="role"
                     value="recruiter"
-                    checked={input.role === 'recruiter'}
+                    checked={input.role === "recruiter"}
                     onChange={changeEventHandler}
                     className="cursor-pointer"
                   />
                   <Label htmlFor="role">Recruiter</Label>
                 </div>
               </RadioGroup>
+              {err.role && <span className="text-red-400 text-sm mt-2">{err.role}</span>}
             </div>
             <div>
-            {loading ? (
+              {loading ? (
                 <Button className="w-full bg-blue-600 text-white font-medium py-2 rounded-md">
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 </Button>
