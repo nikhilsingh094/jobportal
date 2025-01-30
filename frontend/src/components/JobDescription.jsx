@@ -26,7 +26,7 @@ const [isApplied,setIsApplied] = useState(hasApplied);
           withCredentials: true,
         }
       );
-      console.log("apply=====",res);
+      
       
       if (res.data.success) {
         setIsApplied(true)
