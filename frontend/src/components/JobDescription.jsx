@@ -16,9 +16,14 @@ const JobDescription = () => {
   const hasApplied =
     singleJob?.applications?.some((appli) => appli.applicant === user?._id) ||
     false;
-const [isApplied,setIsApplied] = useState(hasApplied);
+  const [isApplied, setIsApplied] = useState(hasApplied);
 
   const applyJob = async () => {
+    if (!user) {
+      alert("You need to login or register first");
+      return;
+    }
+
     try {
       const res = await axios.get(
         `https://jobportal-id64.onrender.com/api/v1/application/apply/${jobId}`,
@@ -27,16 +32,14 @@ const [isApplied,setIsApplied] = useState(hasApplied);
         }
       );
       
-      
       if (res.data.success) {
-        setIsApplied(true)
-        const updateSingleJob = {...singleJob,applications:[...singleJob.applications,{applicant:user?._id}]}
+        setIsApplied(true);
+        const updateSingleJob = { ...singleJob, applications: [...singleJob.applications, { applicant: user?._id }] };
         dispatch(setSingleJob(updateSingleJob));
         toast.success(res.data.message);
       }
     } catch (error) {
       console.log(error);
-      alert("You have to login or register first")
     }
   };
 
@@ -50,9 +53,8 @@ const [isApplied,setIsApplied] = useState(hasApplied);
           }
         );
         if (res.data.success) {
-          
           dispatch(setSingleJob(res.data.job));
-          setIsApplied(res.data.job.applications.some(appli=>appli.applicant === user?._id))
+          setIsApplied(res.data.job.applications.some((appli) => appli.applicant === user?._id));
         }
       } catch (error) {
         console.log(error);
@@ -97,13 +99,13 @@ const [isApplied,setIsApplied] = useState(hasApplied);
         {/* Apply Button */}
         <div className="flex justify-center">
           <button
-            disabled={isApplied}
-            onClick={isApplied ? null : applyJob}
+            disabled={isApplied || !user}
+            onClick={applyJob}
             className={`px-6 py-2 rounded-lg font-medium ${
               isApplied ? "bg-green-600 text-white" : "bg-blue-600 text-white"
             } hover:${isApplied ? "bg-green-700" : "bg-blue-700"}`}
           >
-            {isApplied ? "Applied" : "Apply"}
+            {isApplied ? "Applied" : user ? "Apply" : "Login or Register to Apply"}
           </button>
         </div>
       </div>
