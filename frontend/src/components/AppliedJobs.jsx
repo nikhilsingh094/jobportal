@@ -15,14 +15,29 @@ function AppliedJobs() {
         </thead>
         <tbody>
           {allAppliedJobs.length <= 0 ? (
-            <span>You not applied not yet</span>
+            <tr>
+              <td colSpan="3" className="py-2 px-4 border-b text-center">
+                You have not applied to any jobs yet.
+              </td>
+            </tr>
           ) : (
             allAppliedJobs.map((item) => {
+              const status = item.status || 'pending'; 
               return (
                 <tr key={item._id}>
                   <td className="py-2 px-4 border-b">{item?.job?.title}</td>
-                  <td className="py-2 px-4 border-b text-green-500">
-                    <span className={`${item.status === 'rejected' ? 'bg-red-600 text-white py-1 px-2' : item.status === 'pending' ? 'bg-gray-500 text-white py-1 px-2' : 'bg-green-500 text-white py-1 px-2'}` }>{item?.status.toUpperCase()}</span>
+                  <td className="py-2 px-4 border-b">
+                    <span
+                      className={`${
+                        status === 'rejected'
+                          ? 'bg-red-600 text-white py-1 px-2'
+                          : status === 'pending'
+                          ? 'bg-gray-500 text-white py-1 px-2'
+                          : 'bg-green-500 text-white py-1 px-2'
+                      }`}
+                    >
+                      {status.toUpperCase()}
+                    </span>
                   </td>
                   <td className="py-2 px-4 border-b">
                     {item?.createdAt.split("T")[0]}
