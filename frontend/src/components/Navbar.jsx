@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -92,7 +92,7 @@ const Navbar = () => {
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </PopoverTrigger>
-              <PopoverContent className="w-80 border-2 p-4 m-4 bg-blue-200">
+              <PopoverContent className="w-80 border-2 p-4 m-4 bg-blue-200 z-30">
                 <div className="flex items-center gap-4 space-y-2">
                   <Avatar>
                     <AvatarImage src={user?.profile?.profilePhoto} />
